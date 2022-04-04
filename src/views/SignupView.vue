@@ -142,9 +142,9 @@ export default {
             // })
             
             
-            this.$store.dispatch('createUser', user)
+        const response=  this.$store.dispatch('createUser', user)
             .then(() => {
-              if (Cookies.get('authIsReady')) {
+              if (response) {
                 alert("Successfully created user!");
                 this.$router.push('/')
                 this.authIsReady = true;
