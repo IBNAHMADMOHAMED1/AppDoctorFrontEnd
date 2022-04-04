@@ -101,9 +101,11 @@ import { computed, watch } from '@vue/runtime-core'
 import { get } from 'js-cookie';
 import  Cookies from 'js-cookie'
 import { mapGetters} from "vuex";
-import { axios } from "axios";
-import { get as get_cookie } from "js-cookie";
 
+
+import sweetalert2 from 'sweetalert2';
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 export default {
@@ -169,7 +171,7 @@ methods:{
           console.log(this.heures);
         }
         else if (data[0] === 'success'){
-         alert("vous avez déja un rendez-vous a cette date");
+        //  alert("vous avez déja un rendez-vous a cette date");
           console.log(data[1][0].Horaire);
           console.log(this.heures[0].value);
           console.log(this.heures[0].value==data[1][0].Horaire);
@@ -218,7 +220,8 @@ methods:{
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      alert("rendez vous ajouté avec succès");
+      // alert("rendez vous ajouté avec succès");
+    //  this.$Swal('rendez vous ajouté avec succès', 'OK');
       this.DateConsult = "";
       this.Horaire = "";
       this.TypeConsult = "";

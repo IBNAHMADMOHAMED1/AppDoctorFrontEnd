@@ -10,6 +10,8 @@
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
     "js-cookie": "^2.2.1",
+    "swal": "^0.1.0",
+    "sweetalert2": "^11.4.8",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vue-sweetalert2": "^5.0.2",

@@ -29,18 +29,6 @@ export default {
     // set data into store
     this.$store.commit('setAuthIsReady', Cookies.get('authIsReady'));
     this.$store.commit('setUser', Cookies.get('user'));
-     if (Cookies.get('user') === undefined) {
-        this.$router.push('/login');
-     }
-     else {
-       this.$store.dispatch('getUser', Cookies.get('user')).
-    then (() => {
-      this.data = Cookies.get('dataAppointment');
-      console.log(Cookies.get('dataAppointment'));
-    })
-       
-
-     }
   
     
   },

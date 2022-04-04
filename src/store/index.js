@@ -76,10 +76,11 @@ export default createStore({
         context.commit('setUser',  Cookies.set('user', data[1]))
         context.commit('setAuthIsReady', true)
         context.commit('setFailed', false)
+        console.log('user created')
        
         // save user to local storage using cookies plugin
         Cookies.set('user', data[1])
-        return true
+       
         
      
         // localStorage.setItem('user',data[1]) // save user to local storage
@@ -88,7 +89,7 @@ export default createStore({
       }else {
         context.commit('setFailed', true)
         Cookies.set('Failed', true)
-        return false
+        
       }
      
     

@@ -105,7 +105,7 @@ export default {
              
                 // alert("Successfully  user!");
                 console.log(this.$store.state.authIsReady);
-             if (this.$store.getters.authIsReady) {
+             if (Cookies.get('authIsReady') === 'true') {
                 this.failed = false;
                 this.$router.push('/')
                 this.authIsReady = true;
