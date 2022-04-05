@@ -34,7 +34,7 @@ export default {
   },
   HandleLogout()
   {
-    // console.log('logout');
+    console.log('logout');
     this.$store.dispatch('logoutUser')
     Cookies.remove('authIsReady')
     Cookies.remove('user')

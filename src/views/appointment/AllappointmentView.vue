@@ -13,13 +13,13 @@
         <div class="desc text-gray-600">{{appointment.text}}</div>
       </div>
       <div class="right m-auto mr-0">
-        <div class="icon">
+        <div class="icon flex gap-4">
           <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg> -->
-          <a @click="deleteAppointment(appointment.id)" > <i class="fa-solid fa-trash h-8 w-8 cursor-pointer" style="color:#e11d48;" ></i></a>
+          <a @click="deleteAppointment(appointment.id)" > <i class="fa-solid fa-trash h-8 w-8 fa-2xl  cursor-pointer" style="color:#e11d48;" ></i></a>
 
-          <a class="cursor-pointer"> <i class="fa-solid fa-edit h-8 w-8 " ></i></a>
+          <a @click="UpdateAppointment(appointment.id)" class="cursor-pointer"> <i class="fa-solid fa-edit h-10 w-10 fa-2xl text-green-400"  ></i></a>
           
         </div>
       </div>
@@ -28,7 +28,7 @@
   </div>
 </div>
     <div v-if="Appointments.length <=0">
-      <p style="margin-left:10%;">You dont have any appointment</p>
+     
       <div class="flex items-center justify-center ">
     <div class="px-4 lg:py-12">
         <div class="lg:gap-4 lg:flex">
@@ -93,18 +93,32 @@ export default {
          this.Appointments.splice(this.Appointments.indexOf(id),1);
         })
       },
+
+      UpdateAppointment(id)
+      {
+        this.$router.push('/Appointment/update/'+id);
+      },
      
    },
 
 
       mounted() {
+        console.log('mounted');
       fetch('http://localhost/doctor/Appointments/get/'+this.Reference)
       .then(response => response.json())
       .then(data => this.Appointments=[...data]);
-      // console.log(this.Appointments);
-      
+     
     
     },
+    beforeCreate() {
+      console.log(this.Reference);
+      fetch('http://localhost/doctor/Appointments/get/'+Cookies.get('user'))
+      .then(response => response.json())
+      .then(data => this.Appointments=[...data]);
+     
+    
+    },
+    
     
 }
 </script>

@@ -6,6 +6,7 @@ import SignupView from '../views/SignupView.vue'
 import AppointmentView from '../views/appointment/AppointmentView.vue'
 import NotFound from '../components/NotFound.vue'
 import AllappointmentView from '../views/appointment/AllappointmentView.vue'
+import Update from '@/components/Update.vue'
 
 
 const routes = [
@@ -44,7 +45,12 @@ const routes = [
     path: '/allappointment:',
     name: 'Allappointment',
     component:AllappointmentView
-  }
+  },
+  {
+    path: '/Appointment/update/:id',
+    name: 'Update',
+    component: Update
+  },
   
     
 ]

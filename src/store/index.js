@@ -60,39 +60,36 @@ export default createStore({
   
   },
   actions: {
-   async createUser(context, user) {
-
+    async createUser(context, user)
+    {
+console.log(user)
       const reponse = await fetch("http://localhost/doctor/pasiens/create", {
+        
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
-      })
-      if (reponse.status === 200) {
-        const data = await reponse.json()
-        console.log(data)
-        context.commit('setUser',  Cookies.set('user', data[1]))
-        context.commit('setAuthIsReady', true)
-        context.commit('setFailed', false)
-        console.log('user created')
+      }).then(response => response.json())
+        .then(data => {
+          console.log(data)
+          if (data[0] === 200) {
+            console.log(data[1])
+            context.commit('setUser', Cookies.set('user', data[1]))
+            context.commit('setAuthIsReady', true)
+            context.commit('setFailed', false)
+            console.log('user created')
+          
        
-        // save user to local storage using cookies plugin
-        Cookies.set('user', data[1])
+            // save user to local storage using cookies plugin
+            Cookies.set('authIsReady', true)
+            Cookies.set('user', data[1])
        
-        
-     
-        // localStorage.setItem('user',data[1]) // save user to local storage
 
-        // stoker user in local storage
-      }else {
-        context.commit('setFailed', true)
-        Cookies.set('Failed', true)
-        
-      }
-     
-    
+       
+          }
+        })
     
     },
     async logoutUser(context) {

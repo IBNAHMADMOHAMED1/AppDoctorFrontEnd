@@ -101,23 +101,17 @@ export default {
       handelSubmit(){
           // console.log(this.Reference);
         const process=  this.$store.dispatch('loginUser',this.Reference)
-        .then(() => {
-             
-                // alert("Successfully  user!");
-                console.log(this.$store.state.authIsReady);
+        .then(() => {  
              if (Cookies.get('authIsReady') === 'true') {
                 this.failed = false;
                 this.$router.push('/')
                 this.authIsReady = true;
              }
-              else {
+              else if (Cookies.get('authIsReady') === 'false') {
                   this.failed = true;
-                  console.log("Im here");
-                  
               }
-              
-              
             })
+            
             
       
         }

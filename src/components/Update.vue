@@ -14,7 +14,7 @@
           <div class="h-32 md:h-auto md:w-1/2">
             <img
               class="object-cover w-full h-full"
-              src="../../assets/img/3.jpg"
+              src="../assets/img/3.jpg"
               alt="img"
             />
           </div>
@@ -47,13 +47,14 @@
                 <div>
                   <label class="block text-sm"> Day </label>
                   <input
+                
                     @change="HandlDate"  v-model="DateConsult"  :min="date_sys"
                     type="date"
                     class="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
                     placeholder="Name"
                   />
                 </div>
-                <div v-if="showHoraire" class="mt-4">
+                <div  class="mt-4">
                   <label class="block text-sm"> Horaire </label>
                
                   <select 
@@ -79,9 +80,10 @@
                 </div>
               
                 
-                <input type="submit" value="Book now" @click.prevent="addrendezvous" class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+                <input type="submit" value="Book now" @click.prevent="UpdateAppointment" class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
 />
 <!-- {{failed}} -->
+
               </form>
             </div>
           </div>
@@ -109,15 +111,17 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 export default {
-    name:'addrendezvous',
+    name:'update',
    data() {
     return {
       DateConsult: "",
       Horaire :"",
       TypeConsult: "",
       Reference:Cookies.get('user'),
-      heuresapi:[], 
-      showHoraire:false,
+      UpdateData: [],
+      
+      
+      
       Appointments:[
       ],
       date_sys : new Date().toISOString().slice(0,10),
@@ -164,7 +168,8 @@ methods:{
     HandlDate(){
         // acsses to function in the watch
         console.log(this.DateConsult);
-        this.showHoraire = true;
+     
+        
        fetch("http://localhost/doctor/Appointments/findAppointment/"+this.DateConsult)
         .then(response => response.json())
         .then(data => {
@@ -174,15 +179,15 @@ methods:{
         }
         else if (data[0] === 'success'){
         //  alert("vous avez déja un rendez-vous a cette date");
-          console.log(data[1][0].Horaire);
-          console.log(this.heures[0].value);
-          console.log(this.heures[0].value==data[1][0].Horaire);
-
+          // console.log(data[1][0].Horaire);
+          // console.log(this.heures[0].value);
+          // console.log(this.heures[0].value==data[1][0].Horaire);
+          console.log(data[1]);
           for (var i = 0; i <this.heures.length; i++) {
             for (var j = 0; j <data[1].length;j++) {
                if (this.heures[i].value == data[1][j].Horaire) {
               this.heures[i].status = false;
-              console.log(this.heures[i].status);
+              
 
             }
 
@@ -194,6 +199,7 @@ methods:{
        
        
         });
+     
 
         
     },
@@ -201,46 +207,63 @@ methods:{
     HandlHoraire () {
       // console.log("horaire",this.Horaire);
     },
+UpdateAppointment(){
+  const Appointment = {
+    DateConsult: this.DateConsult,
+    Horaire: this.Horaire,
+    sujet: this.TypeConsult,
 
+    Reference: Cookies.get('user'),
+   
+  };
+  console.log(Appointment);
+  console.log(this.$route.params.id);
+ 
+  fetch('http://localhost/doctor/Appointments/update/'+this.$route.params.id, {
+    method: 'UPDATE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+     
+    },
+    body: JSON.stringify(Appointment),
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data === 'success'){
+        alert("Votre rendez-vous a été modifié avec succès");
+        this.$router.push('/allappointment');
+      }
+    })
+}
 
 
   //ajouter un rendez voous par reference:
-  addrendezvous(){
-    const rendezvous = {
-      DateConsult: this.DateConsult,
-      Horaire :this.Horaire,
-      sujet: this.TypeConsult,
-      Reference:this.Reference
-    };
-   fetch('http://localhost/doctor/Appointments/addAppointment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(rendezvous)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      alert("rendez vous ajouté avec succès");
-    //  this.$Swal('rendez vous ajouté avec succès', 'OK');
-      this.DateConsult = "";
-      this.Horaire = "";
-      this.TypeConsult = "";
-      this.$router.push('/allappointment');
-    })
-    .catch(error => alert(error));
-   
-    
-  },
-  },
+},
     computed: {
       ...mapGetters(['Appointment']),
     },
 
-    created() {
-      // console.log('hi')
-    },
+    mounted() {
+        
+        console.log(this.$route.params.id);
+        fetch("http://localhost/doctor/Appointments/find/"+this.$route.params.id)
+        .then(response => response.json())
+        .then(data =>
+        {
+         
+          this.DateConsult = data[1].DateConsult;
+          this.Horaire = data[1].Horaire;
+          this.TypeConsult = data[1].sujet;
+        }).then(()=>{
+      
+         
+          
+        });
+     
+     
+      
+    }
  
     
 
